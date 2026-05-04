@@ -1,0 +1,49 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>The Witness</h1>
+      <p class="subtitle">Security Surveillance System</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          type="text" 
+          id="username" 
+          formControlName="username"
+          placeholder="Enter your username"
+          [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          placeholder="Enter your password"
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        >
+      </div>
+
+      <div class="alert alert-error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn btn-primary w-full"
+        [disabled]="isLoading || loginForm.invalid"
+      >
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading">Signing In...</span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>© 2026 The Witness. All rights reserved.</p>
+    </div>
+  </div>
+</div>

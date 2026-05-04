@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="page-header flex-between mb-4">
+    <div>
+      <h1>Cameras</h1>
+      <p class="subtitle">Sources for detection — live HTTP/MJPEG or uploaded clips.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn btn-secondary" (click)="openMonitor()">Live monitor</button>
+      <button type="button" class="btn btn-primary" (click)="addCamera()">+ Add camera</button>
+    </div>
+  </div>
+
+  <div *ngIf="patchError" class="alert alert-error mb-3" role="alert">{{ patchError }}</div>
+
+  <div class="spinner" *ngIf="isLoading"></div>
+
+  <div *ngIf="!isLoading && cameras.length === 0" class="empty-state card">
+    <h3>No cameras yet</h3>
+    <p>Add a live stream (HTTP URL from your phone app) or upload a video file.</p>
+    <button type="button" class="btn btn-primary" (click)="addCamera()">Add camera</button>
+  </div>
+
+  <div *ngIf="!isLoading && cameras.length > 0" class="cameras-grid grid grid-3">
+    <article *ngFor="let camera of cameras" class="card camera-card">
+      <div class="camera-thumb" *ngIf="hasLiveHttpPreview(camera)">
+        <img [src]="liveThumbUrl(camera)" alt="" loading="lazy" (error)="onThumbError(camera)" />
+      </div>
+      <div class="camera-thumb camera-thumb--video" *ngIf="camera.source_type === 'UPLOAD' && uploadThumbUrl(camera)">
+        <video [src]="uploadThumbUrl(camera)" muted playsinline preload="metadata"></video>
+        <span class="thumb-label">Upload</span>
+      </div>
+      <div class="camera-thumb camera-thumb--empty" *ngIf="(camera.source_type === 'LIVE' && !hasLiveHttpPreview(camera)) || (camera.source_type === 'UPLOAD' && !uploadThumbUrl(camera))">
+        <span class="thumb-placeholder">{{ camera.source_type }}</span>
+      </div>
+
+      <div class="camera-header">
+        <h3>{{ camera.name }}</h3>
+        <label class="active-toggle" (click)="$event.stopPropagation()">
+          <input
+            type="checkbox"
+            [checked]="camera.is_active"
+            (change)="setActive(camera, $any($event.target).checked)"
+          />
+          <span>Active</span>
+        </label>
+      </div>
+      <div class="camera-info">
+        <p>
+          <strong>Source</strong>
+          <span class="badge badge-source" [class.badge-source--live]="camera.source_type === 'LIVE'" [class.badge-source--upload]="camera.source_type === 'UPLOAD'">
+            {{ camera.source_type }}
+          </span>
+        </p>
+        <p *ngIf="camera.source_type === 'LIVE' && camera.stream_url">
+          <strong>Stream</strong>
+          <span class="stream-line" [title]="camera.stream_url">{{ truncateUrl(camera.stream_url, 52) }}</span>
+        </p>
+        <p><strong>Added</strong> {{ camera.created_at | date: 'medium' }}</p>
+      </div>
+    </article>
+  </div>
+</div>

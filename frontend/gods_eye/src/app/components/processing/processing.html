@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="page-header mb-4">
+    <h1>Processing Video</h1>
+    <p class="subtitle">Monitoring processing for uploaded video (ID: {{ videoId }})</p>
+  </div>
+
+  <div class="card status-card">
+    <p>{{ statusMessage }}</p>
+    <div *ngIf="isLoading" class="spinner"></div>
+    <div *ngIf="camera">
+      <p><strong>Uploaded file:</strong> {{ camera.video_file || camera.name }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="incidents.length === 0 && !isLoading" class="empty-state card">
+    <h3>No incidents detected yet</h3>
+    <p>Processing is ongoing — refresh or wait a few seconds.</p>
+  </div>
+
+  <div *ngIf="incidents.length > 0" class="incidents-list">
+    <h3>Detected Incidents</h3>
+    <div *ngFor="let inc of incidents" class="incident-card card">
+      <div class="incident-header">
+        <h4>Incident {{ inc.id }} — {{ inc.incident_type }} ({{ inc.confidence }})</h4>
+        <small>Detected at: {{ inc.detected_at | date:'short' }}</small>
+      </div>
+      <div class="evidence-grid grid grid-3">
+        <div *ngFor="let ev of evidenceMap[inc.id] || []" class="evidence-thumb" (click)="openEvidence(ev)">
+          <img *ngIf="ev.image_frame" [src]="getMediaUrl(ev.image_frame)" alt="evidence" />
+          <video *ngIf="ev.video_snippet" [src]="getMediaUrl(ev.video_snippet)" muted></video>
+          <div class="meta">
+            <small>t={{ ev.timestamp }}s</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="processedFile" class="card processed-card">
+    <h3>Processed Video Available</h3>
+    <p>You can download or view the processed (annotated) video below.</p>
+    <video controls [src]="getMediaUrl(processedFile)" style="max-width:100%;"></video>
+    <p><a [href]="getMediaUrl(processedFile)" target="_blank">Open processed video in new tab</a></p>
+  </div>
+
+  <app-evidence-modal *ngIf="selectedEvidence" [evidence]="selectedEvidence" (close)="closeModal()"></app-evidence-modal>
+</div>

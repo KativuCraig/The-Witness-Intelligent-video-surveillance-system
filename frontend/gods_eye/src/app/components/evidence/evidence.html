@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="page-header mb-4">
+    <h1>Evidence</h1>
+    <p class="subtitle">Frames and clips attached to incidents</p>
+  </div>
+
+  <div class="spinner" *ngIf="isLoading"></div>
+
+  <div *ngIf="!isLoading && evidenceList.length === 0" class="empty-state card">
+    <h3>No evidence yet</h3>
+    <p>Processed incidents with stored frames will appear here.</p>
+  </div>
+
+  <div *ngIf="!isLoading && evidenceList.length > 0" class="evidence-grid grid grid-4">
+    <button type="button" *ngFor="let item of evidenceList" class="evidence-tile card" (click)="viewEvidence(item)">
+      <div class="evidence-preview">
+        <img
+          *ngIf="item.image_frame"
+          class="preview-media"
+          [src]="mediaSrc(item.image_frame)"
+          alt="Evidence"
+          loading="lazy"
+        />
+        <video
+          *ngIf="item.video_snippet && !item.image_frame"
+          class="preview-media preview-media--video"
+          [src]="mediaSrc(item.video_snippet)"
+          muted
+          playsinline
+          preload="metadata"
+        ></video>
+        <div class="preview-overlay">View</div>
+      </div>
+      <div class="evidence-details">
+        <p><strong>Incident</strong> #{{ item.incident }}</p>
+        <p><strong>Time</strong> {{ item.timestamp | number: '1.1-1' }}s</p>
+        <p><small>{{ item.created_at | date: 'short' }}</small></p>
+      </div>
+    </button>
+  </div>
+</div>
+
+<app-evidence-modal *ngIf="selectedEvidence" [evidence]="selectedEvidence" (close)="closeModal()">
+</app-evidence-modal>

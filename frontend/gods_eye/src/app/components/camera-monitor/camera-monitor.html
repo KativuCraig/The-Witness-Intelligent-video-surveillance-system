@@ -1,0 +1,68 @@
+<div class="container-fluid monitor-container">
+  <div class="page-header flex-between mb-4">
+    <div>
+      <h1>Live monitor</h1>
+      <p class="subtitle">HTTP / MJPEG (e.g. IP Camera on iOS — use the MJPEG line from the app, often <code>/video</code>).</p>
+    </div>
+    <div class="monitor-stats">
+      <span class="badge badge-live">{{ previewCameras.length }} preview</span>
+      <span class="badge badge-acknowledged">{{ cameras.length }} total</span>
+    </div>
+  </div>
+
+  <div class="spinner" *ngIf="isLoading"></div>
+
+  <div *ngIf="!isLoading && previewCameras.length === 0" class="empty-state card">
+    <h3>No preview sources</h3>
+    <p>Activate a camera with a valid <strong>LIVE</strong> stream URL (HTTP) or an <strong>UPLOAD</strong> file.</p>
+    <p class="hint">RTSP URLs cannot play in the browser — use your app’s MJPEG or HTTP video address (often ends with <code>/video</code>).</p>
+    <a routerLink="/cameras" class="btn btn-primary">Manage cameras</a>
+  </div>
+
+  <div *ngIf="!isLoading && previewCameras.length > 0" class="camera-grid grid grid-4">
+    <div *ngFor="let camera of previewCameras" class="camera-feed card">
+      <div class="camera-feed-header">
+        <h3>{{ camera.name }}</h3>
+        <span class="badge" [ngClass]="camera.source_type === 'LIVE' ? 'badge-live' : 'badge-upload'">
+          {{ camera.source_type }}
+        </span>
+      </div>
+      <div class="video-container">
+        <ng-container *ngIf="camera.source_type === 'LIVE'">
+          <img
+            *ngIf="liveDisplayMode(camera) === 'http' && !liveFailed(camera)"
+            class="live-feed-img"
+            [src]="trustedLiveUrl(camera)"
+            [alt]="'Live: ' + camera.name"
+            (error)="onLiveError(camera)"
+          />
+          <div *ngIf="liveDisplayMode(camera) === 'http' && liveFailed(camera)" class="video-placeholder video-placeholder--error">
+            <p>Could not load stream</p>
+            <small [title]="effectiveLiveUrl(camera)">{{ truncateUrl(effectiveLiveUrl(camera), 72) }}</small>
+            <small class="hint-inline">In «IP Camera», copy the <strong>MJPEG</strong> URL from the server screen (often ends with <code>/video</code>). If login is on, use <code>http://admin:admin@IP:PORT/video</code>.</small>
+          </div>
+          <div *ngIf="liveDisplayMode(camera) === 'rtsp'" class="video-placeholder">
+            <p><strong>RTSP</strong> cannot play in the browser</p>
+            <small>Use an HTTP/MJPEG URL from your camera app, or re-stream via MediaMTX / FFmpeg to HLS.</small>
+            <small class="mono" [title]="camera.stream_url || ''">{{ truncateUrl(camera.stream_url, 72) }}</small>
+          </div>
+          <div *ngIf="liveDisplayMode(camera) === 'none'" class="video-placeholder">
+            <p>Unsupported stream URL</p>
+            <small [title]="camera.stream_url || ''">{{ truncateUrl(camera.stream_url, 72) }}</small>
+          </div>
+        </ng-container>
+        <video
+          *ngIf="camera.source_type === 'UPLOAD' && uploadVideoUrl(camera)"
+          class="live-feed-img"
+          [src]="uploadVideoUrl(camera)"
+          controls
+          playsinline
+          muted
+        ></video>
+      </div>
+      <div class="camera-feed-footer" *ngIf="camera.stream_url">
+        <span class="mono" [title]="camera.stream_url">{{ truncateUrl(camera.stream_url, 80) }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+{
+  "base_url": "http://127.0.0.1:8000/api/",
+  "authentication": {
+    "type": "Token",
+    "header": "Authorization: Token <token>"
+  },
+  "endpoints": [
+    {
+      "name": "Login",
+      "url": "/api/auth/login/",
+      "method": "POST",
+      "auth_required": false,
+      "roles_allowed": [],
+      "request": {
+        "username": "string",
+        "password": "string"
+      },
+      "response": {
+        "token": "string",
+        "user": {
+          "id": "number",
+          "username": "string",
+          "role": "ADMIN | SECURITY | VIEWER"
+        }
+      }
+    },
+    {
+      "name": "List Cameras",
+      "url": "/api/cameras/",
+      "method": "GET",
+      "auth_required": true,
+      "roles_allowed": ["ADMIN"],
+      "request": null,
+      "response": [
+        {
+          "id": "number",
+          "name": "string",
+          "source_type": "LIVE | UPLOAD",
+          "stream_url": "string | null",
+          "video_file": "string | null",
+          "is_active": "boolean",
+          "created_at": "ISO-8601 datetime"
+        }
+      ]
+    },
+    {
+      "name": "Create Camera",
+      "url": "/api/cameras/",
+      "method": "POST",
+      "auth_required": true,
+      "roles_allowed": ["ADMIN"],
+      "request": {
+        "name": "string",
+        "source_type": "LIVE | UPLOAD",
+        "stream_url": "string | null",
+        "video_file": "file | null"
+      },
+      "response": {
+        "id": "number",
+        "name": "string",
+        "source_type": "LIVE | UPLOAD",
+        "stream_url": "string | null",
+        "video_file": "string | null",
+        "is_active": "boolean",
+        "created_at": "ISO-8601 datetime"
+      }
+    },
+    {
+      "name": "List Incidents",
+      "url": "/api/incidents/",
+      "method": "GET",
+      "auth_required": true,
+      "roles_allowed": ["ADMIN", "SECURITY"],
+      "request": null,
+      "response": [
+        {
+          "id": "number",
+          "incident_type": "VIOLENCE | WEAPON | THEFT",
+          "confidence": "number (0-1)",
+          "status": "NEW | ACKNOWLEDGED | RESOLVED",
+          "detected_at": "ISO-8601 datetime",
+          "created_at": "ISO-8601 datetime",
+          "video_source": "number",
+          "video_source_name": "string"
+        }
+      ]
+    },
+    {
+      "name": "Get Incident",
+      "url": "/api/incidents/{id}/",
+      "method": "GET",
+      "auth_required": true,
+      "roles_allowed": ["ADMIN", "SECURITY"],
+      "request": null,
+      "response": {
+        "id": "number",
+        "incident_type": "VIOLENCE | WEAPON | THEFT",
+        "confidence": "number (0-1)",
+        "status": "NEW | ACKNOWLEDGED | RESOLVED",
+        "detected_at": "ISO-8601 datetime",
+        "created_at": "ISO-8601 datetime",
+        "video_source": "number",
+        "video_source_name": "string"
+      }
+    },
+    {
+      "name": "List Evidence",
+      "url": "/api/evidence/",
+      "method": "GET",
+      "auth_required": true,
+      "roles_allowed": ["SECURITY"],
+      "query_params": {
+        "incident": "number"
+      },
+      "request": null,
+      "response": [
+        {
+          "id": "number",
+          "incident": "number",
+          "image_frame": "string | null",
+          "video_snippet": "string | null",
+          "timestamp": "number (seconds)",
+          "created_at": "ISO-8601 datetime"
+        }
+      ]
+    },
+    {
+      "name": "List Alerts",
+      "url": "/api/alerts/",
+      "method": "GET",
+      "auth_required": true,
+      "roles_allowed": ["ADMIN", "SECURITY", "VIEWER"],
+      "request": null,
+      "response": [
+        {
+          "id": "number",
+          "incident": "number",
+          "incident_type": "VIOLENCE | WEAPON | THEFT",
+          "sent_at": "ISO-8601 datetime",
+          "delivery_status": "SENT | DELIVERED | FAILED"
+        }
+      ]
+    }
+  ]
+}

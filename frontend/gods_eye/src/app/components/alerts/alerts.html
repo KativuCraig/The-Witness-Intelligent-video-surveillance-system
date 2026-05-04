@@ -1,0 +1,89 @@
+<div class="alerts-page container">
+  <div class="page-header mb-4">
+    <h1>Security Alerts</h1>
+    <p class="subtitle">Notifications for your account. Use Confirm to acknowledge a real event, or Dismiss to close it (e.g. false alarm).</p>
+  </div>
+
+  <div class="spinner" *ngIf="isLoading" aria-label="Loading"></div>
+
+  <div *ngIf="loadError" class="load-error card" role="alert">
+    <h3>Unable to load alerts</h3>
+    <p>{{ loadError }}</p>
+  </div>
+
+  <div *ngIf="actionError" class="action-error card" role="alert">
+    <p>{{ actionError }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && !loadError && alerts.length === 0" class="empty-state card">
+    <h3>No alerts yet</h3>
+    <p *ngIf="auth.hasRole(['ADMIN', 'SECURITY'])">
+      When the system raises an alert for your account, it will appear here. You can also review all incidents on the
+      <a routerLink="/incidents">Incidents</a> page.
+    </p>
+    <p *ngIf="!auth.hasRole(['ADMIN', 'SECURITY'])">
+      When the system raises an alert for your account, it will appear here.
+    </p>
+  </div>
+
+  <div *ngIf="!isLoading && !loadError && alerts.length > 0" class="alerts-list">
+    <div *ngFor="let alert of alerts" class="alert-card card mb-3">
+      <div class="alert-header flex-between">
+        <div class="alert-type">
+          <span
+            class="badge badge-large"
+            [ngClass]="'badge-' + typeBadgeClass(alert)"
+          >
+            {{ alert.incident_type }}
+          </span>
+          <span class="alert-id">Alert #{{ alert.id }}</span>
+        </div>
+        <div class="alert-header-right">
+          <span
+            class="status-pill"
+            [ngClass]="'status-' + (statusOf(alert) | lowercase)"
+          >
+            {{ statusOf(alert) }}
+          </span>
+          <span
+            class="badge"
+            [ngClass]="{
+              'badge-resolved': alert.delivery_status === 'DELIVERED',
+              'badge-acknowledged': alert.delivery_status === 'SENT',
+              'badge-new': alert.delivery_status === 'FAILED'
+            }"
+          >
+            Push: {{ alert.delivery_status }}
+          </span>
+        </div>
+      </div>
+      <div class="alert-body">
+        <div class="alert-info">
+          <p><strong>Incident ID:</strong> {{ alert.incident }}</p>
+          <p><strong>Sent at:</strong> {{ alert.sent_at | date: 'medium' }}</p>
+        </div>
+        <div
+          *ngIf="statusOf(alert) !== 'RESOLVED' && auth.hasRole(['ADMIN', 'SECURITY'])"
+          class="alert-actions"
+        >
+          <button
+            *ngIf="statusOf(alert) === 'NEW'"
+            type="button"
+            class="btn btn-primary"
+            (click)="confirmAlert(alert)"
+          >
+            Confirm
+          </button>
+          <button
+            *ngIf="statusOf(alert) === 'NEW' || statusOf(alert) === 'ACKNOWLEDGED'"
+            type="button"
+            class="btn btn-secondary"
+            (click)="dismissAlert(alert)"
+          >
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

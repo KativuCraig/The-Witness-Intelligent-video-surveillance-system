@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="page-header mb-4">
+    <h1>Incidents</h1>
+    <p class="subtitle">Review detections and open evidence</p>
+  </div>
+
+  <div *ngIf="loadError" class="card mb-4 load-error-banner" role="alert">
+    <p>{{ loadError }}</p>
+  </div>
+
+  <div class="filters-bar card mb-4">
+    <div class="filter-group">
+      <label for="flt-type">Type</label>
+      <select id="flt-type" [(ngModel)]="filterType" (change)="onFilterChange()">
+        <option value="ALL">All types</option>
+        <option value="VIOLENCE">Violence</option>
+        <option value="WEAPON">Weapon</option>
+        <option value="THEFT">Theft</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="flt-status">Status</label>
+      <select id="flt-status" [(ngModel)]="filterStatus" (change)="onFilterChange()">
+        <option value="ALL">All statuses</option>
+        <option value="NEW">New</option>
+        <option value="ACKNOWLEDGED">Acknowledged</option>
+        <option value="RESOLVED">Resolved</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="spinner" *ngIf="isLoading"></div>
+
+  <div *ngIf="!isLoading && !loadError && filteredIncidents.length === 0" class="empty-state card">
+    <h3>No incidents</h3>
+    <p>Nothing matches the current filters.</p>
+  </div>
+
+  <div *ngIf="!isLoading && filteredIncidents.length > 0" class="card table-card">
+    <div class="incidents-table-scroll" tabindex="0" role="region" aria-label="Incidents list">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Camera</th>
+            <th>Status</th>
+            <th>Confidence</th>
+            <th>Detected</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let incident of filteredIncidents">
+            <td>
+              <span class="badge" [ngClass]="'badge-' + incident.incident_type.toLowerCase()">
+                {{ incident.incident_type }}
+              </span>
+            </td>
+            <td class="cell-camera">{{ incident.video_source_name }}</td>
+            <td>
+              <span class="badge" [ngClass]="'badge-' + incident.status.toLowerCase()">
+                {{ incident.status }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="confidence-badge"
+                [style.background-color]="
+                  incident.confidence > 0.7
+                    ? 'var(--status-danger)'
+                    : incident.confidence > 0.5
+                      ? 'var(--status-warning)'
+                      : 'var(--text-muted)'
+                "
+              >
+                {{ (incident.confidence * 100).toFixed(0) }}%
+              </span>
+            </td>
+            <td class="cell-date">{{ incident.detected_at | date: 'short' }}</td>
+            <td class="cell-action">
+              <a [routerLink]="['/incidents', incident.id]" class="btn btn-secondary btn-sm">Details</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

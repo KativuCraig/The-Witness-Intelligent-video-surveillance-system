@@ -125,14 +125,3 @@ This project is licensed under the **MIT License** — see the [`LICENSE`](LICEN
 ## 🙏 Acknowledgements
 
 Built for coursework / demonstration of **intelligent video surveillance** workflows: detection, alerting, and human-in-the-loop review.
-
----
-
-**🎯 Final checklist before a demo**
-
-1. Backend running, migrations applied, at least one **ADMIN** and one **SECURITY** user.  
-2. Model weights present under `models/v2/` (or your configured paths).  
-3. Frontend `api.config.ts` matches the API URL.  
-4. Optional: FCM JSON configured for push tests on a physical device.
-
-Good luck with your presentation 🎓✨

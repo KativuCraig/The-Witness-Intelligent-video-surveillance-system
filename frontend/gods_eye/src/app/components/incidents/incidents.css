@@ -1,0 +1,106 @@
+.load-error-banner {
+  border-left: 4px solid var(--status-danger);
+  background: #fef2f2;
+  padding: 1rem 1.25rem;
+}
+
+.load-error-banner p {
+  margin: 0;
+  color: var(--status-danger);
+  font-weight: 600;
+}
+
+.filters-bar {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-group label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.filter-group select {
+  min-width: 200px;
+}
+
+.confidence-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+table {
+  width: 100%;
+}
+
+td {
+  vertical-align: middle;
+  padding: 0.75rem 1rem;
+}
+
+th {
+  padding: 0.75rem 1rem;
+}
+
+tbody tr {
+  height: auto;
+}
+
+.table-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Scroll rows only: header + filters stay on screen */
+.incidents-table-scroll {
+  max-height: min(65vh, calc(100dvh - 13.5rem));
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.incidents-table-scroll:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.incidents-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface-subtle);
+  box-shadow: 0 1px 0 var(--border-color);
+}
+
+.btn-sm {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.cell-camera {
+  max-width: 14rem;
+  word-break: break-word;
+}
+
+.cell-date {
+  white-space: nowrap;
+}
+
+.cell-action {
+  white-space: nowrap;
+  text-align: right;
+}

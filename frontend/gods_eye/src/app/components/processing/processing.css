@@ -1,0 +1,8 @@
+.container { padding: 16px; }
+.status-card { margin-bottom: 12px; }
+.incidents-list .incident-card { margin-bottom: 12px; }
+.evidence-grid { display: grid; gap: 8px; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.evidence-thumb { cursor: pointer; overflow: hidden; border-radius: 4px; }
+.evidence-thumb img, .evidence-thumb video { width: 100%; height: auto; display: block; }
+.meta { padding: 4px; }

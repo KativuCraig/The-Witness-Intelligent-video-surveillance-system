@@ -1,0 +1,101 @@
+<div class="container incident-detail-wrap">
+  <div class="spinner" *ngIf="isLoading"></div>
+
+  <div *ngIf="!isLoading && loadError" class="card load-fail" role="alert">
+    <h2>Unable to open incident</h2>
+    <p>{{ loadError }}</p>
+    <button type="button" class="btn btn-primary mt-2" (click)="goBack()">Back to incidents</button>
+  </div>
+
+  <div *ngIf="!isLoading && incident" class="incident-detail">
+    <div class="page-header flex-between mb-4">
+      <div>
+        <h1>Incident</h1>
+        <p class="subtitle">#{{ incident.id }} · {{ incident.video_source_name }}</p>
+      </div>
+      <button type="button" class="btn btn-secondary" (click)="goBack()">← Back</button>
+    </div>
+
+    <div class="grid grid-2 mb-4">
+      <div class="card">
+        <h3 class="card-header">Details</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Type</label>
+            <span class="badge" [ngClass]="'badge-' + incident.incident_type.toLowerCase()">
+              {{ incident.incident_type }}
+            </span>
+          </div>
+          <div class="info-item">
+            <label>Status</label>
+            <span class="badge" [ngClass]="'badge-' + incident.status.toLowerCase()">
+              {{ incident.status }}
+            </span>
+          </div>
+          <div class="info-item">
+            <label>Confidence</label>
+            <span class="confidence-value">{{ (incident.confidence * 100).toFixed(1) }}%</span>
+          </div>
+          <div class="info-item">
+            <label>Camera</label>
+            <span>{{ incident.video_source_name }}</span>
+          </div>
+          <div class="info-item">
+            <label>Detected</label>
+            <span>{{ incident.detected_at | date: 'medium' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Logged</label>
+            <span>{{ incident.created_at | date: 'medium' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-header">Evidence</h3>
+        <div class="evidence-summary">
+          <div class="stat">
+            <span class="stat-value">{{ evidence.length }}</span>
+            <span class="stat-label">Frames / clips</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-header">Annotated captures</h3>
+      <div *ngIf="evidence.length === 0" class="empty-state inner-empty">
+        No evidence stored for this incident.
+      </div>
+      <div *ngIf="evidence.length > 0" class="evidence-grid grid grid-4">
+        <button
+          type="button"
+          *ngFor="let item of evidence"
+          class="evidence-tile"
+          (click)="viewEvidence(item)"
+        >
+          <div class="evidence-thumb-wrap">
+            <img
+              *ngIf="item.image_frame"
+              class="evidence-thumb"
+              [src]="mediaSrc(item.image_frame)"
+              alt="Evidence frame"
+              loading="lazy"
+            />
+            <div *ngIf="item.video_snippet && !item.image_frame" class="evidence-thumb evidence-thumb--video">
+              <video [src]="mediaSrc(item.video_snippet)" muted playsinline preload="metadata"></video>
+            </div>
+            <div class="evidence-tile-overlay">Open</div>
+          </div>
+          <div class="evidence-tile-meta">
+            <span>{{ item.timestamp | number: '1.1-1' }}s</span>
+            <small>{{ item.created_at | date: 'short' }}</small>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-evidence-modal *ngIf="selectedEvidence" [evidence]="selectedEvidence" (close)="closeModal()">
+</app-evidence-modal>

@@ -1,0 +1,46 @@
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.js
+
+# --- Build & output ---
+dist/
+tmp/
+out-tsc/
+.angular/
+.sass-cache/
+*.tsbuildinfo
+
+# --- Environment & local config ---
+.env
+.env.*
+!.env.example
+
+# --- Testing & coverage ---
+coverage/
+.nyc_output/
+junit.xml
+test-results/
+playwright-report/
+
+# --- IDE & OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Logs & debug ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# --- Optional tools ---
+.eslintcache
+.stylelintcache
+
+# --- Misc ---
+*.bak
+~$*

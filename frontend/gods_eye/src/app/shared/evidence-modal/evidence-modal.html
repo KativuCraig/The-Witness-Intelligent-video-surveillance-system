@@ -1,0 +1,46 @@
+<div class="modal-overlay" (click)="closeModal()" *ngIf="evidence">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Evidence</h2>
+      <button type="button" class="close-btn" (click)="closeModal()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="evidence-media">
+        <div *ngIf="evidence.image_frame" class="media-container">
+          <img [src]="getMediaUrl(evidence.image_frame)" alt="Evidence Image" />
+        </div>
+        <div *ngIf="evidence.video_snippet" class="media-container">
+          <video [src]="getMediaUrl(evidence.video_snippet)" controls></video>
+        </div>
+        <div *ngIf="!evidence.image_frame && !evidence.video_snippet" class="no-media">
+          <p>No media available</p>
+        </div>
+      </div>
+      <div class="evidence-metadata">
+        <h3>Metadata</h3>
+        <div class="metadata-grid">
+          <div class="metadata-item">
+            <label>Incident ID</label>
+            <span>{{ evidence.incident }}</span>
+          </div>
+          <div class="metadata-item">
+            <label>Timestamp</label>
+            <span>{{ evidence.timestamp }} seconds</span>
+          </div>
+          <div class="metadata-item">
+            <label>Collected At</label>
+            <span>{{ evidence.created_at | date: 'medium' }}</span>
+          </div>
+          <div class="metadata-item">
+            <label>Type</label>
+            <span *ngIf="evidence.image_frame">Image Frame</span>
+            <span *ngIf="evidence.video_snippet">Video Snippet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>

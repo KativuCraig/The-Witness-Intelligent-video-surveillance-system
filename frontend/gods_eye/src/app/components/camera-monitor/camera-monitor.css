@@ -1,0 +1,139 @@
+.monitor-container {
+  min-height: calc(100vh - 4rem);
+  padding-bottom: 2rem;
+}
+
+.monitor-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.camera-grid {
+  gap: 1.5rem;
+}
+
+.camera-feed {
+  background: var(--secondary-dark);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.camera-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--tertiary-dark);
+  border-bottom: 1px solid var(--border-color);
+  gap: 0.75rem;
+}
+
+.camera-feed-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  background: #050508;
+  overflow: hidden;
+}
+
+.live-feed-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  gap: 0.5rem;
+}
+
+.video-placeholder--error {
+  color: var(--status-danger);
+}
+
+.video-placeholder .mono,
+.camera-feed-footer {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.75rem;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+.camera-feed-footer {
+  padding: 0.65rem 1rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.hint {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0.75rem 0 1rem;
+  max-width: 42rem;
+}
+
+.hint code {
+  color: var(--accent-cyan);
+  font-size: 0.9em;
+}
+
+.subtitle code {
+  color: var(--accent-cyan);
+  font-size: 0.92em;
+}
+
+.hint-inline {
+  display: block;
+  margin-top: 0.75rem;
+  max-width: 100%;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.hint-inline code {
+  color: var(--accent-cyan);
+  font-size: 0.85em;
+}
+
+.pulse-indicator {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  animation: pulse-glow 2s infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.35);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(29, 78, 216, 0.2);
+    opacity: 0.85;
+  }
+}

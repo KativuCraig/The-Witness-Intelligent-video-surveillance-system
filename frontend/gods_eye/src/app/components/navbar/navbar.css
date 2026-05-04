@@ -1,0 +1,152 @@
+.navbar {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0.85rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.navbar-brand h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.brand-tagline {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+.role-badge {
+  font-size: 0.65rem;
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+}
+
+.badge-role-admin {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+.badge-role-security {
+  background: #d1fae5;
+  color: #047857;
+  border: 1px solid #6ee7b7;
+}
+
+.badge-role-viewer {
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.navbar-menu li a {
+  display: block;
+  padding: 0.55rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.navbar-menu li a:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.navbar-menu li a.active {
+  background: var(--accent-blue);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .navbar-container {
+    flex-wrap: wrap;
+  }
+
+  .navbar-menu {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .navbar-brand h2 {
+    font-size: 1.2rem;
+  }
+
+  .navbar-menu {
+    gap: 0.2rem;
+  }
+
+  .navbar-menu li a {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+}

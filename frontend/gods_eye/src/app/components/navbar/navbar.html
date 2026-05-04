@@ -1,0 +1,47 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <div class="brand-lockup">
+        <h2>The Witness</h2>
+        <span class="brand-tagline">Security operations</span>
+      </div>
+      <span
+        class="role-badge badge"
+        [ngClass]="{
+          'badge-role-admin': currentUser?.role === 'ADMIN',
+          'badge-role-security': currentUser?.role === 'SECURITY',
+          'badge-role-viewer': currentUser?.role === 'VIEWER'
+        }"
+      >
+        {{ currentUser?.role }}
+      </span>
+    </div>
+
+    <ul class="navbar-menu">
+      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+      
+      <li *ngIf="hasRole(['ADMIN'])">
+        <a routerLink="/cameras" routerLinkActive="active">Cameras</a>
+      </li>
+      
+      <li *ngIf="hasRole(['ADMIN'])">
+        <a routerLink="/cameras/monitor" routerLinkActive="active">Monitor</a>
+      </li>
+      
+      <li *ngIf="hasRole(['ADMIN', 'SECURITY'])">
+        <a routerLink="/incidents" routerLinkActive="active">Incidents</a>
+      </li>
+      
+      <li *ngIf="hasRole(['SECURITY'])">
+        <a routerLink="/evidence" routerLinkActive="active">Evidence</a>
+      </li>
+      
+      <li><a routerLink="/alerts" routerLinkActive="active">Alerts</a></li>
+    </ul>
+
+    <div class="navbar-actions">
+      <span class="user-name">{{ currentUser?.username }}</span>
+      <button class="btn btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
