@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>The Witness — Security</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1 class="ion-text-center">Alert receiver</h1>
+  <p class="ion-text-center ion-margin-bottom hint">
+    Sign in with a Django user that has the <strong>SECURITY</strong> role so incidents appear here and on your device via push (when built natively).
+  </p>
+
+  <ion-list inset="true">
+    <ion-item>
+      <ion-input
+        label="Username"
+        labelPlacement="stacked"
+        autocomplete="username"
+        [(ngModel)]="username"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input
+        label="Password"
+        labelPlacement="stacked"
+        type="password"
+        autocomplete="current-password"
+        [(ngModel)]="password"
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="submit()">
+    Sign in
+  </ion-button>
+</ion-content>

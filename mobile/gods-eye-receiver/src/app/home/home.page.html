@@ -1,0 +1,76 @@
+<ion-header *ngIf="alarm.ringing$ | async" class="alarm-banner">
+  <ion-toolbar color="danger">
+    <ion-title>Incident alarm</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="light" (click)="stopAlarm()">Stop alarm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Incident alerts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="logout()">Sign out</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="ion-padding hint">
+    <p>
+      Backend: <code>{{ apiUrl }}</code>
+    </p>
+    <p>
+      New alerts trigger a <strong>siren + vibration</strong> until you tap <strong>Stop alarm</strong>. The list refreshes every <strong>10 seconds</strong>.
+      Use <strong>Confirm</strong> to acknowledge a real incident, or <strong>Dismiss</strong> to close it (e.g. false alarm).
+    </p>
+  </div>
+
+  <ion-list *ngIf="!error && alerts.length">
+    <ion-item *ngFor="let a of alerts" lines="full">
+      <ion-label>
+        <h2>{{ a.incident_type }}</h2>
+        <p>Incident #{{ a.incident }} · {{ a.delivery_status }}</p>
+        <p>Status: <strong>{{ statusOf(a) }}</strong></p>
+        <p class="muted">{{ a.sent_at | date: 'medium' }}</p>
+      </ion-label>
+      <ion-buttons *ngIf="statusOf(a) !== 'RESOLVED'" slot="end">
+        <ion-button
+          *ngIf="statusOf(a) === 'NEW'"
+          size="small"
+          fill="solid"
+          color="primary"
+          (click)="confirmAlert(a)"
+        >
+          Confirm
+        </ion-button>
+        <ion-button
+          *ngIf="statusOf(a) === 'NEW' || statusOf(a) === 'ACKNOWLEDGED'"
+          size="small"
+          fill="outline"
+          color="medium"
+          (click)="dismissAlert(a)"
+        >
+          Dismiss
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="loading && !alerts.length" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="error" class="ion-padding ion-text-center err">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && !alerts.length" class="ion-padding ion-text-center empty">
+    No alerts yet. When the backend creates incidents for your user, they appear here.
+  </div>
+</ion-content>

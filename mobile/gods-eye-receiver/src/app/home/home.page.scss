@@ -1,0 +1,26 @@
+.hint {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+
+  code {
+    font-size: 0.75rem;
+    word-break: break-all;
+  }
+}
+
+.muted {
+  color: var(--ion-color-medium);
+  font-size: 0.8rem;
+}
+
+.err {
+  color: var(--ion-color-danger);
+}
+
+.empty {
+  color: var(--ion-color-medium);
+}
+
+ion-header.alarm-banner {
+  z-index: 20;
+}

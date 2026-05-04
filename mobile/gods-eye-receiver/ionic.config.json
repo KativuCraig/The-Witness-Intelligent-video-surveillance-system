@@ -1,0 +1,7 @@
+{
+  "name": "gods-eye-receiver",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
